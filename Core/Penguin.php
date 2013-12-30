@@ -29,6 +29,8 @@ class PengBase extends SocketBase
 
 	public function __construct($user, $pass, $serv)
 	{
+		$this->LoginText();
+		
 		$curver = $this->file_get_contents_curl("https://raw.github.com/glen-mac/PHickle/master/Version.txt");
 		if (self::VER < $curver)
 		{
@@ -38,13 +40,13 @@ class PengBase extends SocketBase
 		$this->PengUser = trim($user);
 		$this->PengPass = trim($pass);
 
-		//$this->checkAcStat();
+		$this->checkAcStat();
 
 		$this->arrErrors = parse_ini_file(realpath(dirname(__FILE__) . '/..') . '/Config/Errors.ini', true);
 		$this->arrRooms = parse_ini_file(realpath(dirname(__FILE__) . '/..') . '/Config/Rooms.ini', true);
 		$this->arrServers = parse_ini_file(realpath(dirname(__FILE__) . '/..') . '/Config/Servers.ini', true);
 		
-		$this->LoginText();
+
 		$this->pengLogin();
 		$this->pengJoinServ($serv);
 		echo "[STAT]: You Have Logged In!".chr(10).chr(10);
@@ -57,7 +59,7 @@ class PengBase extends SocketBase
 		echo "		___  __ \__  / / /__(_)________  /____  /____  ".chr(10);
 		echo "		__  /_/ /_  /_/ /__  /_  ___/_  //_/_  /_  _ \ ".chr(10);
 		echo "		_  ____/_  __  / _  / / /__ _  ,<  _  / /  __/ ".chr(10);
-		echo "		/_/     /_/ /_/  /_/  \___/ /_/|_| /_/  \___/   0.4".chr(10).chr(10);
+		echo "		/_/     /_/ /_/  /_/  \___/ /_/|_| /_/  \___/   ".self::VER.chr(10).chr(10);
 		echo "			  Brought to you by G-Mac  ".chr(10).chr(10);
 	}
 	
@@ -70,7 +72,6 @@ class PengBase extends SocketBase
 		$this->send("<msg t='sys'><body action='login' r='0'><login z='w1'><nick><![CDATA[" . $this->PengUser . "]]></nick><pword><![CDATA[" . $this->LoginHash . "]]></pword></login></body></msg>");
 
 		$LoginPckt = $this->receive();
-		//echo $LoginPckt.chr(10);
 		$this->handle_loginPack($LoginPckt);
 		$this->disconnect();
 	}
@@ -167,7 +168,6 @@ class PengBase extends SocketBase
 		{
 			$ResultHS = $this->receive();
 		}
-		//echo $ResultHS.chr(10);
 
 		$this->send("<msg t='sys'><body action='rndK' r='-1'></body></msg>");
 		$ResultHS = $this->receive();		
@@ -175,12 +175,9 @@ class PengBase extends SocketBase
 		{
 			$ResultHS = $this->receive();
 		}
-		//echo $ResultHS.chr(10);
 
 		$XmlObj = simplexml_load_string($ResultHS);
 		$this->RandKey = $XmlObj->body->k;
-
-		//echo $this->RandKey.chr(10);
 
 		return $this->RandKey;
 
@@ -203,12 +200,10 @@ class PengBase extends SocketBase
 	private function checkAcStat()
 	{
 		$val = $this->file_get_contents_curl("https://ms.clubpenguin.com:8443/mobileas/api/json/account/login?appVersion=pl-1.0&user=" . $this->PengUser . "&pass=" . $this->PengPass);
-		if (!stripos($val, '"success":true'))
+		if (!stripos($val, "true"))
 		{
-			die("[STAT] Account credentials incorrect");
-		} else {
-			return true;
-		}
+			die("[STAT]: Account credentials incorrect\n");
+		} 
 	}
 
 	private function file_get_contents_curl( $url )
@@ -223,7 +218,8 @@ class PengBase extends SocketBase
         	CURLOPT_CONNECTTIMEOUT => 120,    
         	CURLOPT_TIMEOUT        => 120,      
         	CURLOPT_MAXREDIRS      => 10,       
-        	CURLOPT_SSL_VERIFYPEER => false     
+        	CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSLVERSION     => 3    
     		);
 
     	$ch = curl_init( $url );

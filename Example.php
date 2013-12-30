@@ -2,7 +2,7 @@
 
 require '/Core/System.php';
 
-$Test = new Penguin('batman113', 'batman', 'Blizzard');
+$Test = new Penguin('USERNAME', 'PASSWORD', 'SERVER NAME');
 
 while ($Test->LoginStat = True)
 {
