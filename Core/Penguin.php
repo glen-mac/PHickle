@@ -4,7 +4,7 @@ require (realpath(dirname(__FILE__) . '/..') . "/Sockets/SockFunc.php");
 
 class PengBase extends SocketBase
 {
-	const VERSION = 0.4;
+	const VER = 0.4;
 	
 	public $PengUser, $PengID, $PengCoins, $PengAge, $PengSession, $PengMemberTime, $PengMemberStat, $PengSafeChatStat;
 	public $PengItem = array("colour"=>"","head"=>"","face"=>"","neck"=>"","body"=>"","hand"=>"","feet"=>"","flag"=>"","photo"=>"");
@@ -29,12 +29,11 @@ class PengBase extends SocketBase
 
 	public function __construct($user, $pass, $serv)
 	{
-		$curver = $this->file_get_contents_curl("https://raw.github.com/glen-mac/PHickle/master/Config/Version.txt");
-		if (self::VERSION < $curver)
+		$curver = $this->file_get_contents_curl("https://raw.github.com/glen-mac/PHickle/master/Version.txt");
+		if (self::VER < $curver)
 		{
-			die("\n[STAT]: THERE IS A NEWER VERSION AVAILABLE ($curver), YOUR CURRENT VERSION IS " . VERSION . "  - PLEASE UPDATE AS SOON AS POSSIBLE!\nhttps://github.com/glen-mac/PHickle \n\n");
+			die("\n[STAT]: THERE IS A NEWER VERSION AVAILABLE ($curver), YOUR CURRENT VERSION IS " . self::VER . "\nPLEASE UPDATE AS SOON AS POSSIBLE!\nhttps://github.com/glen-mac/PHickle \n\n");
 		}
-		
 		
 		$this->PengUser = trim($user);
 		$this->PengPass = trim($pass);
