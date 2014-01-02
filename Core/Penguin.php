@@ -202,7 +202,7 @@ class PengBase extends SocketBase
 		$val = $this->file_get_contents_curl("https://ms.clubpenguin.com:8443/mobileas/api/json/account/login?appVersion=pl-1.0&user=" . $this->PengUser . "&pass=" . $this->PengPass);
 		if (!stripos($val, "true"))
 		{
-			die("[STAT]: Account credentials incorrect\n");
+			die("\n[STAT]: Account credentials incorrect\n");
 		} 
 	}
 
