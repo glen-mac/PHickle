@@ -4,7 +4,7 @@ require (realpath(dirname(__FILE__) . '/..') . "/Sockets/SockFunc.php");
 
 class PengBase extends SocketBase
 {
-	const VER = 0.4;
+	const VER = 0.41;
 	
 	public $PengUser, $PengID, $PengCoins, $PengAge, $PengSession, $PengMemberTime, $PengMemberStat, $PengSafeChatStat;
 	public $PengItem = array("colour"=>"","head"=>"","face"=>"","neck"=>"","body"=>"","hand"=>"","feet"=>"","flag"=>"","photo"=>"");
